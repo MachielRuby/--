@@ -68,11 +68,40 @@ const arButton = document.getElementById('ar-button');
 const modelViewer = document.getElementById('model-viewer');
 
 arButton.addEventListener('click', () => {
+  if (!loadedModel) {
+    console.warn('模型尚未加载');
+    return;
+  }
+
+  // 1. 保存原始状态
+  const originalPosition = loadedModel.position.clone();
+  const originalRotation = loadedModel.rotation.clone();
+
+  // 2. 重置状态以便导出
+  // 先重置旋转，确保包围盒计算准确
+  loadedModel.rotation.set(0, 0, 0);
+  loadedModel.position.set(0, 0, 0);
+  
+  // 更新矩阵
+  loadedModel.updateMatrixWorld(true);
+  
+  // 计算包围盒，确保模型底部贴合地面
+  const box = new THREE.Box3().setFromObject(loadedModel);
+  const yOffset = -box.min.y; // 计算底部到 0 的偏移量
+  loadedModel.position.y = yOffset;
+  
+  // 更新矩阵以应用新的位置
+  loadedModel.updateMatrixWorld(true);
+
   // 导出 GLB
   const exporter = new GLTFExporter();
   exporter.parse(
-    scene,
+    loadedModel, // 只导出模型本身，不导出整个场景（包含灯光等）
     function (result) {
+      // 3. 恢复原始状态（无论成功失败都要恢复，但在回调里恢复更安全，或者用 finally）
+      loadedModel.position.copy(originalPosition);
+      loadedModel.rotation.copy(originalRotation);
+
       if (result instanceof ArrayBuffer) {
         const blob = new Blob([result], { type: 'application/octet-stream' });
         const url = URL.createObjectURL(blob);
@@ -94,6 +123,9 @@ arButton.addEventListener('click', () => {
     },
     function (error) {
       console.error('An error happened during parsing', error);
+      // 出错也要恢复状态
+      loadedModel.position.copy(originalPosition);
+      loadedModel.rotation.copy(originalRotation);
     },
     { binary: true } // 导出为 GLB 二进制格式
   );
