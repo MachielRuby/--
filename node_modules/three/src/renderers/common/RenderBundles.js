@@ -1,8 +1,6 @@
 import ChainMap from './ChainMap.js';
 import RenderBundle from './RenderBundle.js';
 
-const _chainKeys = [];
-
 /**
  * This renderer module manages render bundles.
  *
@@ -34,20 +32,16 @@ class RenderBundles {
 	get( bundleGroup, camera ) {
 
 		const bundles = this.bundles;
+		const keys = [ bundleGroup, camera ];
 
-		_chainKeys[ 0 ] = bundleGroup;
-		_chainKeys[ 1 ] = camera;
-
-		let bundle = bundles.get( _chainKeys );
+		let bundle = bundles.get( keys );
 
 		if ( bundle === undefined ) {
 
 			bundle = new RenderBundle( bundleGroup, camera );
-			bundles.set( _chainKeys, bundle );
+			bundles.set( keys, bundle );
 
 		}
-
-		_chainKeys.length = 0;
 
 		return bundle;
 

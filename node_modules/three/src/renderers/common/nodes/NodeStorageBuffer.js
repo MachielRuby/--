@@ -32,7 +32,7 @@ class NodeStorageBuffer extends StorageBuffer {
 		/**
 		 * The access type.
 		 *
-		 * @type {string}
+		 * @type {String}
 		 */
 		this.access = nodeUniform ? nodeUniform.access : NodeAccess.READ_WRITE;
 

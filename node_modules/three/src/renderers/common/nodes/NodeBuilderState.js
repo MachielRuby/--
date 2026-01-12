@@ -14,37 +14,37 @@ class NodeBuilderState {
 	/**
 	 * Constructs a new node builder state.
 	 *
-	 * @param {string} vertexShader - The native vertex shader code.
-	 * @param {string} fragmentShader - The native fragment shader code.
-	 * @param {string} computeShader - The native compute shader code.
+	 * @param {String?} vertexShader - The native vertex shader code.
+	 * @param {String?} fragmentShader - The native fragment shader code.
+	 * @param {String?} computeShader - The native compute shader code.
 	 * @param {Array<NodeAttribute>} nodeAttributes - An array of node attributes.
 	 * @param {Array<BindGroup>} bindings - An array of bind groups.
 	 * @param {Array<Node>} updateNodes - An array of nodes that implement their `update()` method.
 	 * @param {Array<Node>} updateBeforeNodes - An array of nodes that implement their `updateBefore()` method.
 	 * @param {Array<Node>} updateAfterNodes - An array of nodes that implement their `updateAfter()` method.
-	 * @param {NodeMaterialObserver} observer - A node material observer.
+	 * @param {NodeMaterialObserver} monitor - A node material observer.
 	 * @param {Array<Object>} transforms - An array with transform attribute objects. Only relevant when using compute shaders with WebGL 2.
 	 */
-	constructor( vertexShader, fragmentShader, computeShader, nodeAttributes, bindings, updateNodes, updateBeforeNodes, updateAfterNodes, observer, transforms = [] ) {
+	constructor( vertexShader, fragmentShader, computeShader, nodeAttributes, bindings, updateNodes, updateBeforeNodes, updateAfterNodes, monitor, transforms = [] ) {
 
 		/**
 		 * The native vertex shader code.
 		 *
-		 * @type {string}
+		 * @type {String}
 		 */
 		this.vertexShader = vertexShader;
 
 		/**
 		 * The native fragment shader code.
 		 *
-		 * @type {string}
+		 * @type {String}
 		 */
 		this.fragmentShader = fragmentShader;
 
 		/**
 		 * The native compute shader code.
 		 *
-		 * @type {string}
+		 * @type {String}
 		 */
 		this.computeShader = computeShader;
 
@@ -98,12 +98,12 @@ class NodeBuilderState {
 		 *
 		 * @type {NodeMaterialObserver}
 		 */
-		this.observer = observer;
+		this.monitor = monitor;
 
 		/**
 		 * How often this state is used by render objects.
 		 *
-		 * @type {number}
+		 * @type {Number}
 		 */
 		this.usedTimes = 0;
 
@@ -122,11 +122,11 @@ class NodeBuilderState {
 
 		for ( const instanceGroup of this.bindings ) {
 
-			const shared = instanceGroup.bindings[ 0 ].groupNode.shared; // All bindings in the group must have the same groupNode.
+			const shared = instanceGroup.bindings[ 0 ].groupNode.shared; // TODO: Is it safe to always check the first binding in the group?
 
 			if ( shared !== true ) {
 
-				const bindingsGroup = new BindGroup( instanceGroup.name, [], instanceGroup.index, instanceGroup.bindingsReference );
+				const bindingsGroup = new BindGroup( instanceGroup.name, [], instanceGroup.index, instanceGroup );
 				bindings.push( bindingsGroup );
 
 				for ( const instanceBinding of instanceGroup.bindings ) {

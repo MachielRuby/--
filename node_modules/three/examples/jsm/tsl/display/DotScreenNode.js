@@ -1,11 +1,12 @@
 import { TempNode } from 'three/webgpu';
 import { nodeObject, Fn, uv, uniform, vec2, vec3, sin, cos, add, vec4, screenSize } from 'three/tsl';
 
+/** @module DotScreenNode **/
+
 /**
  * Post processing node for creating dot-screen effect.
  *
  * @augments TempNode
- * @three_import import { dotScreen } from 'three/addons/tsl/display/DotScreenNode.js';
  */
 class DotScreenNode extends TempNode {
 
@@ -19,8 +20,8 @@ class DotScreenNode extends TempNode {
 	 * Constructs a new dot screen node.
 	 *
 	 * @param {Node} inputNode - The node that represents the input of the effect.
-	 * @param {number} [angle=1.57] - The rotation of the effect in radians.
-	 * @param {number} [scale=1] - The scale of the effect. A higher value means smaller dots.
+	 * @param {Number} [angle=1.57] - The rotation of the effect in radians.
+	 * @param {Number} [scale=1] - The scale of the effect. A higher value means smaller dots.
 	 */
 	constructor( inputNode, angle = 1.57, scale = 1 ) {
 
@@ -94,11 +95,10 @@ export default DotScreenNode;
 /**
  * TSL function for creating a dot-screen node for post processing.
  *
- * @tsl
  * @function
  * @param {Node<vec4>} node - The node that represents the input of the effect.
- * @param {number} [angle=1.57] - The rotation of the effect in radians.
- * @param {number} [scale=1] - The scale of the effect. A higher value means smaller dots.
+ * @param {Number} [angle=1.57] - The rotation of the effect in radians.
+ * @param {Number} [scale=1] - The scale of the effect. A higher value means smaller dots.
  * @returns {DotScreenNode}
  */
 export const dotScreen = ( node, angle, scale ) => nodeObject( new DotScreenNode( nodeObject( node ), angle, scale ) );

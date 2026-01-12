@@ -2,7 +2,6 @@ import { LightsNode } from '../../nodes/Nodes.js';
 import ChainMap from './ChainMap.js';
 
 const _defaultLights = /*@__PURE__*/ new LightsNode();
-const _chainKeys = [];
 
 /**
  * This renderer module manages the lights nodes which are unique
@@ -29,7 +28,7 @@ class Lighting extends ChainMap {
 	 * Creates a new lights node for the given array of lights.
 	 *
 	 * @param {Array<Light>} lights - The render object.
-	 * @return {LightsNode} The lights node.
+	 * @return {Boolean} Whether if the given render object has an initialized geometry or not.
 	 */
 	createNode( lights = [] ) {
 
@@ -50,19 +49,18 @@ class Lighting extends ChainMap {
 
 		if ( scene.isQuadMesh ) return _defaultLights;
 
-		_chainKeys[ 0 ] = scene;
-		_chainKeys[ 1 ] = camera;
+		// tiled lighting
 
-		let node = this.get( _chainKeys );
+		const keys = [ scene, camera ];
+
+		let node = this.get( keys );
 
 		if ( node === undefined ) {
 
 			node = this.createNode();
-			this.set( _chainKeys, node );
+			this.set( keys, node );
 
 		}
-
-		_chainKeys.length = 0;
 
 		return node;
 

@@ -11,7 +11,7 @@ class ComputePipeline extends Pipeline {
 	/**
 	 * Constructs a new render pipeline.
 	 *
-	 * @param {string} cacheKey - The pipeline's cache key.
+	 * @param {String} cacheKey - The pipeline's cache key.
 	 * @param {ProgrammableStage} computeProgram - The pipeline's compute shader.
 	 */
 	constructor( cacheKey, computeProgram ) {
@@ -28,7 +28,7 @@ class ComputePipeline extends Pipeline {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */

@@ -12,10 +12,10 @@ class NodeSampledTexture extends SampledTexture {
 	/**
 	 * Constructs a new node-based sampled texture.
 	 *
-	 * @param {string} name - The textures's name.
+	 * @param {String} name - The textures's name.
 	 * @param {TextureNode} textureNode - The texture node.
 	 * @param {UniformGroupNode} groupNode - The uniform group node.
-	 * @param {?string} [access=null] - The access type.
+	 * @param {String?} [access=null] - The access type.
 	 */
 	constructor( name, textureNode, groupNode, access = null ) {
 
@@ -38,7 +38,7 @@ class NodeSampledTexture extends SampledTexture {
 		/**
 		 * The access type.
 		 *
-		 * @type {?string}
+		 * @type {String?}
 		 * @default null
 		 */
 		this.access = access;
@@ -46,9 +46,22 @@ class NodeSampledTexture extends SampledTexture {
 	}
 
 	/**
+	 * Overwrites the default to additionally check if the node value has changed.
+	 *
+	 * @param {Number} generation - The generation.
+	 * @return {Boolean} Whether an update is required or not.
+	 */
+	needsBindingsUpdate( generation ) {
+
+		return this.textureNode.value !== this.texture || super.needsBindingsUpdate( generation );
+
+	}
+
+	/**
 	 * Updates the binding.
 	 *
-	 * @return {boolean} Whether the texture has been updated and must be
+	 * @param {Number} generation - The generation.
+	 * @return {Boolean} Whether the texture has been updated and must be
 	 * uploaded to the GPU.
 	 */
 	update() {
@@ -81,10 +94,10 @@ class NodeSampledCubeTexture extends NodeSampledTexture {
 	/**
 	 * Constructs a new node-based sampled cube texture.
 	 *
-	 * @param {string} name - The textures's name.
+	 * @param {String} name - The textures's name.
 	 * @param {TextureNode} textureNode - The texture node.
 	 * @param {UniformGroupNode} groupNode - The uniform group node.
-	 * @param {?string} [access=null] - The access type.
+	 * @param {String?} [access=null] - The access type.
 	 */
 	constructor( name, textureNode, groupNode, access = null ) {
 
@@ -93,7 +106,7 @@ class NodeSampledCubeTexture extends NodeSampledTexture {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */
@@ -115,10 +128,10 @@ class NodeSampledTexture3D extends NodeSampledTexture {
 	/**
 	 * Constructs a new node-based sampled 3D texture.
 	 *
-	 * @param {string} name - The textures's name.
+	 * @param {String} name - The textures's name.
 	 * @param {TextureNode} textureNode - The texture node.
 	 * @param {UniformGroupNode} groupNode - The uniform group node.
-	 * @param {?string} [access=null] - The access type.
+	 * @param {String?} [access=null] - The access type.
 	 */
 	constructor( name, textureNode, groupNode, access = null ) {
 
@@ -127,7 +140,7 @@ class NodeSampledTexture3D extends NodeSampledTexture {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */

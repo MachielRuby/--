@@ -11,7 +11,7 @@ class UniformBuffer extends Buffer {
 	/**
 	 * Constructs a new uniform buffer.
 	 *
-	 * @param {string} name - The buffer's name.
+	 * @param {String} name - The buffer's name.
 	 * @param {TypedArray} [buffer=null] - The buffer.
 	 */
 	constructor( name, buffer = null ) {
@@ -21,7 +21,7 @@ class UniformBuffer extends Buffer {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */

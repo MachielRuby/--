@@ -1,7 +1,7 @@
 import { Group } from '../../objects/Group.js';
 
 /**
- * A specialized group which enables applications access to the
+ * A specialized group which eanbles applications access to the
  * Render Bundle API of WebGPU. The group with all its descendant nodes
  * are considered as one render bundle and processed as such by
  * the renderer.
@@ -24,7 +24,7 @@ class BundleGroup extends Group {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */
@@ -35,7 +35,7 @@ class BundleGroup extends Group {
 		 * during serialization/deserialization. It should always
 		 * match the class name.
 		 *
-		 * @type {string}
+		 * @type {String}
 		 * @readonly
 		 * @default 'BundleGroup'
 		 */
@@ -49,7 +49,7 @@ class BundleGroup extends Group {
 		 * If a change is required, an update can still be forced by setting the
 		 * `needsUpdate` flag to `true`.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @default true
 		 */
 		this.static = true;
@@ -57,7 +57,7 @@ class BundleGroup extends Group {
 		/**
 		 * The bundle group's version.
 		 *
-		 * @type {number}
+		 * @type {Number}
 		 * @readonly
 		 * @default 0
 		 */
@@ -68,9 +68,9 @@ class BundleGroup extends Group {
 	/**
 	 * Set this property to `true` when the bundle group has changed.
 	 *
-	 * @type {boolean}
+	 * @type {Boolean}
 	 * @default false
-	 * @param {boolean} value
+	 * @param {Boolean} value
 	 */
 	set needsUpdate( value ) {
 

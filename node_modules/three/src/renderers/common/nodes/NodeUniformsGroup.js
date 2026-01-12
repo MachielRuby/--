@@ -14,7 +14,7 @@ class NodeUniformsGroup extends UniformsGroup {
 	/**
 	 * Constructs a new node-based uniforms group.
 	 *
-	 * @param {string} name - The group's name.
+	 * @param {String} name - The group's name.
 	 * @param {UniformGroupNode} groupNode - The uniform group node.
 	 */
 	constructor( name, groupNode ) {
@@ -24,7 +24,7 @@ class NodeUniformsGroup extends UniformsGroup {
 		/**
 		 * The group's ID.
 		 *
-		 * @type {number}
+		 * @type {Number}
 		 */
 		this.id = _id ++;
 
@@ -38,7 +38,7 @@ class NodeUniformsGroup extends UniformsGroup {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */

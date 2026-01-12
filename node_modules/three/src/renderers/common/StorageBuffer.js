@@ -11,7 +11,7 @@ class StorageBuffer extends Buffer {
 	/**
 	 * Constructs a new uniform buffer.
 	 *
-	 * @param {string} name - The buffer's name.
+	 * @param {String} name - The buffer's name.
 	 * @param {BufferAttribute} attribute - The buffer attribute.
 	 */
 	constructor( name, attribute ) {
@@ -28,7 +28,7 @@ class StorageBuffer extends Buffer {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */

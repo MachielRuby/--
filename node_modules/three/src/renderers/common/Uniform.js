@@ -1,5 +1,4 @@
 import { Color } from '../../math/Color.js';
-import { Matrix2 } from '../../math/Matrix2.js';
 import { Matrix3 } from '../../math/Matrix3.js';
 import { Matrix4 } from '../../math/Matrix4.js';
 import { Vector2 } from '../../math/Vector2.js';
@@ -17,22 +16,22 @@ class Uniform {
 	/**
 	 * Constructs a new uniform.
 	 *
-	 * @param {string} name - The uniform's name.
-	 * @param {any} value - The uniform's value.
+	 * @param {String} name - The uniform's name.
+	 * @param {Any} value - The uniform's value.
 	 */
 	constructor( name, value ) {
 
 		/**
 		 * The uniform's name.
 		 *
-		 * @type {string}
+		 * @type {String}
 		 */
 		this.name = name;
 
 		/**
 		 * The uniform's value.
 		 *
-		 * @type {any}
+		 * @type {Any}
 		 */
 		this.value = value;
 
@@ -41,7 +40,7 @@ class Uniform {
 		 * Derived uniforms will set this property to a data type specific
 		 * value.
 		 *
-		 * @type {number}
+		 * @type {Number}
 		 */
 		this.boundary = 0;
 
@@ -49,7 +48,7 @@ class Uniform {
 		 * The item size. Derived uniforms will set this property to a data
 		 * type specific value.
 		 *
-		 * @type {number}
+		 * @type {Number}
 		 */
 		this.itemSize = 0;
 
@@ -57,7 +56,7 @@ class Uniform {
 		 * This property is set by {@link UniformsGroup} and marks
 		 * the start position in the uniform buffer.
 		 *
-		 * @type {number}
+		 * @type {Number}
 		 */
 		this.offset = 0;
 
@@ -66,7 +65,7 @@ class Uniform {
 	/**
 	 * Sets the uniform's value.
 	 *
-	 * @param {any} value - The value to set.
+	 * @param {Any} value - The value to set.
 	 */
 	setValue( value ) {
 
@@ -77,7 +76,7 @@ class Uniform {
 	/**
 	 * Returns the uniform's value.
 	 *
-	 * @return {any} The value.
+	 * @return {Any} The value.
 	 */
 	getValue() {
 
@@ -98,8 +97,8 @@ class NumberUniform extends Uniform {
 	/**
 	 * Constructs a new Number uniform.
 	 *
-	 * @param {string} name - The uniform's name.
-	 * @param {number} value - The uniform's value.
+	 * @param {String} name - The uniform's name.
+	 * @param {Number} value - The uniform's value.
 	 */
 	constructor( name, value = 0 ) {
 
@@ -108,7 +107,7 @@ class NumberUniform extends Uniform {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */
@@ -132,7 +131,7 @@ class Vector2Uniform extends Uniform {
 	/**
 	 * Constructs a new Number uniform.
 	 *
-	 * @param {string} name - The uniform's name.
+	 * @param {String} name - The uniform's name.
 	 * @param {Vector2} value - The uniform's value.
 	 */
 	constructor( name, value = new Vector2() ) {
@@ -142,7 +141,7 @@ class Vector2Uniform extends Uniform {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */
@@ -166,7 +165,7 @@ class Vector3Uniform extends Uniform {
 	/**
 	 * Constructs a new Number uniform.
 	 *
-	 * @param {string} name - The uniform's name.
+	 * @param {String} name - The uniform's name.
 	 * @param {Vector3} value - The uniform's value.
 	 */
 	constructor( name, value = new Vector3() ) {
@@ -176,7 +175,7 @@ class Vector3Uniform extends Uniform {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */
@@ -200,7 +199,7 @@ class Vector4Uniform extends Uniform {
 	/**
 	 * Constructs a new Number uniform.
 	 *
-	 * @param {string} name - The uniform's name.
+	 * @param {String} name - The uniform's name.
 	 * @param {Vector4} value - The uniform's value.
 	 */
 	constructor( name, value = new Vector4() ) {
@@ -210,7 +209,7 @@ class Vector4Uniform extends Uniform {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */
@@ -234,7 +233,7 @@ class ColorUniform extends Uniform {
 	/**
 	 * Constructs a new Number uniform.
 	 *
-	 * @param {string} name - The uniform's name.
+	 * @param {String} name - The uniform's name.
 	 * @param {Color} value - The uniform's value.
 	 */
 	constructor( name, value = new Color() ) {
@@ -244,7 +243,7 @@ class ColorUniform extends Uniform {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */
@@ -258,41 +257,6 @@ class ColorUniform extends Uniform {
 }
 
 /**
- * Represents a Matrix2 uniform.
- *
- * @private
- * @augments Uniform
- */
-class Matrix2Uniform extends Uniform {
-
-	/**
-	 * Constructs a new Number uniform.
-	 *
-	 * @param {string} name - The uniform's name.
-	 * @param {Matrix2} value - The uniform's value.
-	 */
-	constructor( name, value = new Matrix2() ) {
-
-		super( name, value );
-
-		/**
-		 * This flag can be used for type testing.
-		 *
-		 * @type {boolean}
-		 * @readonly
-		 * @default true
-		 */
-		this.isMatrix2Uniform = true;
-
-		this.boundary = 8;
-		this.itemSize = 4;
-
-	}
-
-}
-
-
-/**
  * Represents a Matrix3 uniform.
  *
  * @private
@@ -303,7 +267,7 @@ class Matrix3Uniform extends Uniform {
 	/**
 	 * Constructs a new Number uniform.
 	 *
-	 * @param {string} name - The uniform's name.
+	 * @param {String} name - The uniform's name.
 	 * @param {Matrix3} value - The uniform's value.
 	 */
 	constructor( name, value = new Matrix3() ) {
@@ -313,7 +277,7 @@ class Matrix3Uniform extends Uniform {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */
@@ -337,7 +301,7 @@ class Matrix4Uniform extends Uniform {
 	/**
 	 * Constructs a new Number uniform.
 	 *
-	 * @param {string} name - The uniform's name.
+	 * @param {String} name - The uniform's name.
 	 * @param {Matrix4} value - The uniform's value.
 	 */
 	constructor( name, value = new Matrix4() ) {
@@ -347,7 +311,7 @@ class Matrix4Uniform extends Uniform {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */
@@ -363,5 +327,5 @@ class Matrix4Uniform extends Uniform {
 export {
 	NumberUniform,
 	Vector2Uniform, Vector3Uniform, Vector4Uniform, ColorUniform,
-	Matrix2Uniform, Matrix3Uniform, Matrix4Uniform
+	Matrix3Uniform, Matrix4Uniform
 };

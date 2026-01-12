@@ -14,9 +14,9 @@ class IndirectStorageBufferAttribute extends StorageBufferAttribute {
 	/**
 	 * Constructs a new storage buffer attribute.
 	 *
-	 * @param {number|Uint32Array} count - The item count. It is also valid to pass a `Uint32Array` as an argument.
+	 * @param {Number|Uint32Array} count - The item count. It is also valid to pass a `Uint32Array` as an argument.
 	 * The subsequent parameter is then obsolete.
-	 * @param {number} itemSize - The item size.
+	 * @param {Number} itemSize - The item size.
 	 */
 	constructor( count, itemSize ) {
 
@@ -25,7 +25,7 @@ class IndirectStorageBufferAttribute extends StorageBufferAttribute {
 		/**
 		 * This flag can be used for type testing.
 		 *
-		 * @type {boolean}
+		 * @type {Boolean}
 		 * @readonly
 		 * @default true
 		 */

@@ -12,9 +12,9 @@ class BindGroup {
 	/**
 	 * Constructs a new bind group.
 	 *
-	 * @param {string} name - The bind group's name.
+	 * @param {String} name - The bind group's name.
 	 * @param {Array<Binding>} bindings - An array of bindings.
-	 * @param {number} index - The group index.
+	 * @param {Number} index - The group index.
 	 * @param {Array<Binding>} bindingsReference - An array of reference bindings.
 	 */
 	constructor( name = '', bindings = [], index = 0, bindingsReference = [] ) {
@@ -22,7 +22,7 @@ class BindGroup {
 		/**
 		 * The bind group's name.
 		 *
-		 * @type {string}
+		 * @type {String}
 		 */
 		this.name = name;
 
@@ -36,7 +36,7 @@ class BindGroup {
 		/**
 		 * The group index.
 		 *
-		 * @type {number}
+		 * @type {Number}
 		 */
 		this.index = index;
 
@@ -50,7 +50,7 @@ class BindGroup {
 		/**
 		 * The group's ID.
 		 *
-		 * @type {number}
+		 * @type {Number}
 		 */
 		this.id = _id ++;
 
