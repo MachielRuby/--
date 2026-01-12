@@ -1,6 +1,7 @@
 import './style.css'
 import * as THREE from 'three';
-import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 import '@google/model-viewer';
 
 // 初始化场景
@@ -9,31 +10,48 @@ scene.background = new THREE.Color(0x333333);
 
 // 初始化相机
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 5;
+camera.position.z = 2; // 调整相机距离，宇航员模型比较小
 
 // 初始化渲染器
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// 创建正方体
-const geometry = new THREE.BoxGeometry(2, 2, 2);
-const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+// 全局变量存储加载的模型
+let loadedModel = null;
 
-// 添加灯光（为了 MeshStandardMaterial 显示颜色）
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+// 加载模型 (Astronaut.glb)
+const loader = new GLTFLoader();
+loader.load(
+  'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
+  function (gltf) {
+    loadedModel = gltf.scene;
+    // 调整模型位置和大小
+    loadedModel.position.y = -1;
+    scene.add(loadedModel);
+  },
+  undefined,
+  function (error) {
+    console.error('模型加载失败:', error);
+  }
+);
+
+// 添加灯光
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
 scene.add(ambientLight);
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
 directionalLight.position.set(5, 5, 5);
 scene.add(directionalLight);
 
 // 动画循环
 function animate() {
   requestAnimationFrame(animate);
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  
+  // 如果模型已加载，让它旋转
+  if (loadedModel) {
+    loadedModel.rotation.y += 0.005;
+  }
+  
   renderer.render(scene, camera);
 }
 animate();
