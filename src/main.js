@@ -90,10 +90,19 @@ arButton.addEventListener('click', async () => {
     // 更新矩阵
     loadedModel.updateMatrixWorld(true);
     
-    // 计算包围盒，确保模型底部贴合地面
+    // 计算包围盒
     const box = new THREE.Box3().setFromObject(loadedModel);
-    const yOffset = -box.min.y; // 计算底部到 0 的偏移量
-    loadedModel.position.y = yOffset;
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+
+    // 计算偏移量：
+    // X, Z 轴移动负的中心坐标，使其水平居中
+    // Y 轴移动负的最小值，使其底部贴地
+    const xOffset = -center.x;
+    const yOffset = -box.min.y;
+    const zOffset = -center.z;
+
+    loadedModel.position.set(xOffset, yOffset, zOffset);
     
     // 更新矩阵以应用新的位置
     loadedModel.updateMatrixWorld(true);
