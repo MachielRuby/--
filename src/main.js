@@ -2,6 +2,7 @@ import './style.css'
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { USDZExporter } from 'three/addons/exporters/USDZExporter.js';
 import '@google/model-viewer';
 
 // 初始化场景
@@ -67,66 +68,80 @@ window.addEventListener('resize', () => {
 const arButton = document.getElementById('ar-button');
 const modelViewer = document.getElementById('model-viewer');
 
-arButton.addEventListener('click', () => {
+arButton.addEventListener('click', async () => {
   if (!loadedModel) {
     console.warn('模型尚未加载');
     return;
   }
 
+  arButton.textContent = "正在生成 AR 模型...";
+  arButton.disabled = true;
+
   // 1. 保存原始状态
   const originalPosition = loadedModel.position.clone();
   const originalRotation = loadedModel.rotation.clone();
 
-  // 2. 重置状态以便导出
-  // 先重置旋转，确保包围盒计算准确
-  loadedModel.rotation.set(0, 0, 0);
-  loadedModel.position.set(0, 0, 0);
-  
-  // 更新矩阵
-  loadedModel.updateMatrixWorld(true);
-  
-  // 计算包围盒，确保模型底部贴合地面
-  const box = new THREE.Box3().setFromObject(loadedModel);
-  const yOffset = -box.min.y; // 计算底部到 0 的偏移量
-  loadedModel.position.y = yOffset;
-  
-  // 更新矩阵以应用新的位置
-  loadedModel.updateMatrixWorld(true);
+  try {
+    // 2. 重置状态以便导出
+    // 先重置旋转，确保包围盒计算准确
+    loadedModel.rotation.set(0, 0, 0);
+    loadedModel.position.set(0, 0, 0);
+    
+    // 更新矩阵
+    loadedModel.updateMatrixWorld(true);
+    
+    // 计算包围盒，确保模型底部贴合地面
+    const box = new THREE.Box3().setFromObject(loadedModel);
+    const yOffset = -box.min.y; // 计算底部到 0 的偏移量
+    loadedModel.position.y = yOffset;
+    
+    // 更新矩阵以应用新的位置
+    loadedModel.updateMatrixWorld(true);
 
-  // 导出 GLB
-  const exporter = new GLTFExporter();
-  exporter.parse(
-    loadedModel, // 只导出模型本身，不导出整个场景（包含灯光等）
-    function (result) {
-      // 3. 恢复原始状态（无论成功失败都要恢复，但在回调里恢复更安全，或者用 finally）
-      loadedModel.position.copy(originalPosition);
-      loadedModel.rotation.copy(originalRotation);
+    // 3. 并行导出 GLB (Android) 和 USDZ (iOS)
+    const gltfPromise = new Promise((resolve, reject) => {
+      const exporter = new GLTFExporter();
+      exporter.parse(
+        loadedModel,
+        (result) => resolve(result),
+        (err) => reject(err),
+        { binary: true }
+      );
+    });
 
-      if (result instanceof ArrayBuffer) {
-        const blob = new Blob([result], { type: 'application/octet-stream' });
-        const url = URL.createObjectURL(blob);
-        
-        // 设置 model-viewer src
-        modelViewer.src = url;
-        modelViewer.style.display = 'block'; // 显示 model-viewer
-        
-        // 尝试激活 AR
-        if (modelViewer.canActivateAR) {
-             modelViewer.activateAR();
-        } else {
-            console.log("当前设备不支持 AR 或 model-viewer 未准备好");
-            // 如果是在 PC 上调试，直接显示 model-viewer 查看模型
-        }
-      } else {
-        console.error('GLTF 导出失败');
-      }
-    },
-    function (error) {
-      console.error('An error happened during parsing', error);
-      // 出错也要恢复状态
-      loadedModel.position.copy(originalPosition);
-      loadedModel.rotation.copy(originalRotation);
-    },
-    { binary: true } // 导出为 GLB 二进制格式
-  );
+    const usdzPromise = new USDZExporter().parse(loadedModel);
+
+    const [gltfResult, usdzResult] = await Promise.all([gltfPromise, usdzPromise]);
+
+    // 4. 处理 GLB (Android)
+    const glbBlob = new Blob([gltfResult], { type: 'application/octet-stream' });
+    const glbUrl = URL.createObjectURL(glbBlob);
+    modelViewer.src = glbUrl;
+
+    // 5. 处理 USDZ (iOS)
+    const usdzBlob = new Blob([usdzResult], { type: 'application/octet-stream' });
+    const usdzUrl = URL.createObjectURL(usdzBlob);
+    modelViewer.iosSrc = usdzUrl;
+
+    // 6. 激活 AR
+    modelViewer.style.display = 'block';
+    
+    if (modelViewer.canActivateAR) {
+      modelViewer.activateAR();
+    } else {
+      console.log("当前设备不支持 AR 或 model-viewer 未准备好");
+      alert("AR 模式已就绪，但您的设备可能不支持直接唤起。");
+    }
+
+  } catch (error) {
+    console.error('导出模型失败:', error);
+    alert('生成 AR 模型失败，请重试');
+  } finally {
+    // 7. 恢复原始状态
+    loadedModel.position.copy(originalPosition);
+    loadedModel.rotation.copy(originalRotation);
+    
+    arButton.textContent = "开启 AR";
+    arButton.disabled = false;
+  }
 });
